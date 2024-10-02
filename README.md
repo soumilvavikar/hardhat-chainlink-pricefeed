@@ -128,16 +128,12 @@ NOTE: You will need to put the address of the deployed contract in the `GetPrice
 ```shell
 # Install python
 sudo apt-get install python3.8
-
 # Check version of the install python
 python3 --version
-
 # Install the requests module
 pip install requests
-
 # Install web3
 pip install web3
-
 ```
 
 ### Write the .py file with the code
@@ -149,10 +145,8 @@ Refer to `.py` files in the interactions package.
 ```shell
 # Command to call the latest block number function on the blockchain
 python3 interactions/GetLatestBlockNumber.py 
-
 # Command to call the get ETH to USD Pricefeed
 python3 interactions/GetETHUSDPriceFeed.py 
-
 # Command to call the get LINK to USD Pricefeed
 python3 interactions/GetLINKUSDPriceFeed.py 
 ```
