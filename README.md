@@ -1,6 +1,6 @@
 # Sample Hardhat Project for Connecting to Chainlink Price Feed
 
-This project provides a boiler plate code to connect to the chainlink pricefeed using Hardhat. 
+This project provides a boiler plate code to connect to the chainlink pricefeed using Hardhat.
 
 ## Setting up a new Hardhat Project
 
@@ -105,15 +105,54 @@ Based on the fork url configured, we can fork of the testnet (as we have done in
 ### Deploying the contract to Ignition LocalNet
 
 ```shell
-npx hardhat ignition deploy ignition/modules/PriceFeedModule.js
+npx hardhat ignition deploy ignition/modules/PriceFeedModule.js --network localhost
 ```
 
 ### Testing the Deployed Contract
 
-The below command will run the GetPriceFeed.js which is an interaction and calls the deployed smart contract on the local instance of the ignition localnet. 
+The below command will run the GetPriceFeed.js which is an interaction and calls the deployed smart contract on the local instance of the ignition localnet.
 
 ```shell
 npx hardhat run interactions/GetPriceFeeds.js --network localhost
 ```
 
 NOTE: You will need to put the address of the deployed contract in the `GetPriceFeed.js`. The address of the deployed contract is printed in the console logs when it is successfully deployed using the `ignition deploy` command.
+
+## Connecting to the Blockchain and Deployed Contract in Python
+
+### Prerequistes
+
+- Install Python
+- Install request module of python
+
+```shell
+# Install python
+sudo apt-get install python3.8
+
+# Check version of the install python
+python3 --version
+
+# Install the requests module
+pip install requests
+
+# Install web3
+pip install web3
+
+```
+
+### Write the .py file with the code
+
+Refer to `.py` files in the interactions package.
+
+#### Commands
+
+```shell
+# Command to call the latest block number function on the blockchain
+python3 interactions/GetLatestBlockNumber.py 
+
+# Command to call the get ETH to USD Pricefeed
+python3 interactions/GetETHUSDPriceFeed.py 
+
+# Command to call the get LINK to USD Pricefeed
+python3 interactions/GetLINKUSDPriceFeed.py 
+```
