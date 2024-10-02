@@ -35,3 +35,85 @@ Account balance:  195842693411971046
 Current ETH/USD price: 245429117341
 Link/USD price: 1108038171
 ```
+
+## Forking the Mainnet / Testnet on Local Ignition Chain
+
+### First setup the ignition local node
+
+#### Step 1: Install the Ignition Module
+
+```shell
+npm install --save-dev @nomicfoundation/hardhat-ignition-ethers
+```
+
+#### Step 2: Update the `hardhat.config.js`
+
+Add the folloing imports
+
+```js
+// This command would import the plugin required to start the local ignition chain.
+require("@nomicfoundation/hardhat-ignition-ethers");
+```
+
+Inside the networks section, add the following:
+
+```js
+hardhat: {
+      hardfork: "merge",
+      // If you want to do some forking set `enabled` to true
+      forking: {
+          url: MAINNET_RPC_URL !== undefined ? MAINNET_RPC_URL : "",
+          blockNumber: FORKING_BLOCK_NUMBER !== undefined ? FORKING_BLOCK_NUMBER : "",
+          enabled: true, //  set this to false if you want to disable forking
+      },
+      chainId: 31337,
+  },
+  ```
+
+**NOTE**: The MAINNET_RPC_URL and FORKING_BLOCK_NUMBER are stored in the .env file.
+
+#### Step 3: Create the `PriceFeedModule.js` in the `ignition/module` folder
+
+```js
+const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
+// Here we are building the module using the buildModule command. 
+module.exports = buildModule("PriceFeedModule", (m) => {
+    const module = m.contract("PriceFeed", []);
+
+    m.call(module, "getETHUSD", []);
+    m.call(module, "getLINKUSD", []);
+
+    return { module };
+});
+```
+
+#### Step 4: Spin the Local Forked Hardhat Node
+
+```shell
+# This will start the forked local node (if the `hardhat.config.js` has enabled field set to true inside the hardhat network's forking section).
+npx hardhat node
+
+OR 
+
+# This command will fork the testnet infura at block number passed
+npx hardhat node --fork https://sepolia.infura.io/v3/${INFURA_API_KEY} --fork-block-number 6800249
+
+```
+
+Based on the fork url configured, we can fork of the testnet (as we have done in our example) OR we can fork off the mainnet.
+
+### Deploying the contract to Ignition LocalNet
+
+```shell
+npx hardhat ignition deploy ignition/modules/PriceFeedModule.js
+```
+
+### Testing the Deployed Contract
+
+The below command will run the GetPriceFeed.js which is an interaction and calls the deployed smart contract on the local instance of the ignition localnet. 
+
+```shell
+npx hardhat run interactions/GetPriceFeeds.js --network localhost
+```
+
+NOTE: You will need to put the address of the deployed contract in the `GetPriceFeed.js`. The address of the deployed contract is printed in the console logs when it is successfully deployed using the `ignition deploy` command.

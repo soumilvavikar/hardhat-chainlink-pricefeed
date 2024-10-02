@@ -1,3 +1,9 @@
+/**
+ * BEFORE RUNNING THIS SCRIPT ENSURE THAT THE hardhat.config.js HAS CORRECT DEFAULT NETWORK SETUP. IT SHOULD BE SEPOLIA
+ * 
+ * IMPORTANT: EXECUTING THIS SCRIPT COSTS SEPOLIA ETH / GAS. HENCE RUN THIS SPARINGLY
+ */
+
 import pkg from 'hardhat';
 const { ethers } = pkg;
 import dotenv from "dotenv";
